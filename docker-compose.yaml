@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  app:
+    ports:
+      - "80:80"
+      - "443:443"
+    build: ./docker/app
+    container_name: web_app
+    volumes:
+      - ./src/projects:/var/www/html
+      - ./docker/app/log:/var/log/apache2
+    depends_on:
+      - db
+  db:
+    container_name: app_db
+    build: ./docker/db
+    environment:
+      MYSQL_ROOT_PASSWORD: password1
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_password
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      # - ./docker/db/log:/var/log
+    ports:
+      - 3306:3306
