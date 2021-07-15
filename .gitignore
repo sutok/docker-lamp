@@ -28,5 +28,6 @@ docker/db/data/*
 docker/app/log/*
 !docker/app/log/.empty
 src/projects/
+src/renewal/
 docker/app/ssl/*
 !docker/app/ssl/.empty

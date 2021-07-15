@@ -31,7 +31,7 @@
 
 - 自己証明書(docker/app/ssl/)
 
-    内包のserver.crt, server.keyでにて見れなければ自作する必要あり
+    内包のserver.crt, server.keyにて見れなければ自作する必要あり
 ```
 ADD ssl/server.crt /etc/ssl/certs/
 ADD ssl/server.key /etc/ssl/private/
@@ -56,4 +56,10 @@ git clone https://github/xxxx/yyy projects
     container_name: web_app
     volumes:
       - ./src/projects:/var/www/html
+```
+
+## 作業端末のhostsへ追加
+
+```
+127.0.0.1 renewal
 ```

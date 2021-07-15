@@ -22,19 +22,23 @@ ADD 000-default.conf /etc/apache2/sites-enabled/
 ADD default-ssl.conf /etc/apache2/sites-enabled/
 ADD ssl/localdomain.local.pem /etc/ssl/certs/
 ADD ssl/localdomain.local-key.pem /etc/ssl/private/
+ADD ssl/renewal.pem     /etc/ssl/certs/
+ADD ssl/renewal-key.pem /etc/ssl/private/
 
 # Composerのインストール
 RUN cd /usr/bin && curl -s http://getcomposer.org/installer | php && ln -s /usr/bin/composer.phar /usr/bin/composer \
 && sed -i  's/^\;date\.timezone\ =/date.timezone = Asia\/Tokyo/'  /etc/php/7.4/apache2/php.ini \
 && chmod 400 /etc/ssl/certs/localdomain.local.pem \
-&& chmod 400 /etc/ssl/private/localdomain.local-key.pem 
+&& chmod 400 /etc/ssl/private/localdomain.local-key.pem \
+&& chmod 400 /etc/ssl/certs/renewal.pem \
+&& chmod 400  /etc/ssl/private/renewal-key.pem 
 
 # modRewriteを有効化する
 RUN mv /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled \
 && /bin/sh -c a2enmod rewrite \
 && echo "ServerName ubuntu" > /etc/apache2/conf-available/fqdn.conf \
 && a2enconf fqdn.conf \
-&& a2enmod ssl 
+&& a2enmod ssl
 
 EXPOSE 80 443
 CMD ["apache2ctl", "-D", "FOREGROUND"]

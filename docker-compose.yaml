@@ -8,7 +8,10 @@ services:
     container_name: web_app
     volumes:
       - ./src/projects:/var/www/html
+      - ./src/renewal:/var/www/renewal
       - ./docker/app/log:/var/log/apache2
+    environment:
+      - VIRTUAL_Host=localhost,renewal
     depends_on:
       - db
   db:
